@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Header from '../components/Header';
+import WalletForm from '../components/WalletForm';
 
 class Wallet extends React.Component {
   constructor() {
@@ -21,13 +22,12 @@ class Wallet extends React.Component {
   }
 
   render() {
-    const { email } = this.state;
+    // const { email } = this.state;
 
     return (
       <>
         <Header />
-        <div>TrybeWallet</div>
-        <p>{email}</p>
+        <WalletForm />
       </>
     );
   }
