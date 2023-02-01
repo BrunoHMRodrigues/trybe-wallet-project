@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React from 'react';
+import Header from '../components/Header';
 
 class Wallet extends React.Component {
   constructor() {
@@ -24,6 +25,7 @@ class Wallet extends React.Component {
 
     return (
       <>
+        <Header />
         <div>TrybeWallet</div>
         <p>{email}</p>
       </>
