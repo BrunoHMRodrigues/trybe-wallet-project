@@ -7,15 +7,43 @@ class Header extends Component {
   constructor() {
     super();
 
+    // const { wallet: { expenses } } = this.props;
+    // let sum = 0;
+    // sum += expenses.map((expense) => expense.value);
+
+    this.handleTotal = this.handleTotal.bind(this);
+
     this.state = {
       totalCost: 0,
       currency: 'BRL',
     };
   }
 
+  // componentDidMount() {
+  //   this.handleTotal();
+  // }
+
+  handleTotal() {
+    const { wallet: { expenses } } = this.props;
+    let sum = 0;
+    for (let index = 0; index < expenses.length; index += 1) {
+      sum += Number(expenses.value);
+    }
+    this.setState({
+      totalCost: sum,
+    });
+    return sum;
+  }
+
   render() {
     const { user: { email } } = this.props;
     const { totalCost, currency } = this.state;
+    // let sum = 0;
+    // sum += expenses.map((expense) => expense.value);
+    // console.log(sum);
+    // this.setState({
+    //   totalCost: sum,
+    // });
     return (
       <header>
 
@@ -34,7 +62,7 @@ class Header extends Component {
 
           </p>
           <p data-testid="total-field">
-            {totalCost}
+            { totalCost }
             `
           </p>
           <p data-testid="header-currency-field">
@@ -49,6 +77,18 @@ class Header extends Component {
 Header.propTypes = {
   user: PropTypes.shape({
     email: PropTypes.string.isRequired,
+  }).isRequired,
+  wallet: PropTypes.shape({
+    currencies: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+    expenses: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      value: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+      currency: PropTypes.string.isRequired,
+      method: PropTypes.string.isRequired,
+      tag: PropTypes.string.isRequired,
+      exchangeRates: PropTypes.string.isRequired,
+    })),
   }).isRequired,
 };
 

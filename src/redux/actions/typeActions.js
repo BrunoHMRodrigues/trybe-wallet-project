@@ -1,4 +1,5 @@
 const LOGIN = 'LOGIN';
 const CURRENCIES = 'CURRENCIES';
+const EXPENSES = 'EXPENDURE';
 
-export { LOGIN, CURRENCIES };
+export { LOGIN, CURRENCIES, EXPENSES };
