@@ -5,25 +5,7 @@ import Header from '../components/Header';
 import WalletForm from '../components/WalletForm';
 
 class Wallet extends React.Component {
-  // constructor() {
-  //   super();
-
-  //   this.state = {
-  //     email: '',
-  //   };
-  // }
-
-  // componentDidMount() {
-  //   console.log(this.props);
-  //   const { user } = this.props;
-  //   this.setState({
-  //     email: user.email,
-  //   });
-  // }
-
   render() {
-    // const { email } = this.state;
-
     return (
       <>
         <Header />

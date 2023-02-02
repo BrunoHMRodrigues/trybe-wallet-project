@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { expendureSave, fetchCurrencies } from '../redux/actions/index';
+import {
+  fetchCurrencies,
+  fetchExchangeRates } from '../redux/actions/index';
 
 class WalletForm extends Component {
   constructor() {
@@ -9,7 +11,7 @@ class WalletForm extends Component {
 
     this.state = {
       id: 0,
-      value: 0,
+      value: '',
       description: '',
       currency: 'USD',
       method: 'Dinheiro',
@@ -17,46 +19,24 @@ class WalletForm extends Component {
       exchangeRates: '',
     };
 
-    // this.getCurrencies = this.getCurrencies.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.addExpendure = this.addExpendure.bind(this);
   }
 
   componentDidMount() {
-    // this.getCurrencies();
     const { dispatch } = this.props;
     dispatch(fetchCurrencies());
   }
 
   handleChange({ target }) {
     const { name, value } = target;
-    console.log(name);
-    console.log(value);
     this.setState({
       [name]: value,
     });
   }
 
-  // async getCurrencies() {
-  //   const response = await fetch('https://economia.awesomeapi.com.br/json/all');
-  //   const result = await response.json();
-  //   const currenciesKeys = Object.keys(result);
-  //   const currencies = [];
-  //   for (let index = 0; index < currenciesKeys.length; index += 1) {
-  //     const USDT = 'USDT';
-  //     if (currenciesKeys[index] !== USDT) {
-  //       currencies.push(currenciesKeys[index]);
-  //     }
-  //   }
-  //   const { dispatch } = this.props;
-  //   dispatch(currenciesSave(currencies));
-  // }
-
   async addExpendure() {
     const { dispatch, wallet: { expenses } } = this.props;
-    // const response = await fetch('https://economia.awesomeapi.com.br/json/all');
-    // const result = await response.json();
-    // const currenciesKeys = Object.keys(result);
     this.setState({
       id: expenses.length,
     }, () => {
@@ -70,25 +50,39 @@ class WalletForm extends Component {
         exchangeRates,
       } = this.state;
 
-      dispatch(expendureSave(
-        [
-          ...expenses,
-          {
-            id,
-            value,
-            description,
-            currency,
-            method,
-            tag,
-            exchangeRates,
-          },
-        ],
-      ));
+      const expenseToSave = [
+        ...expenses,
+        {
+          id,
+          value,
+          description,
+          currency,
+          method,
+          tag,
+          exchangeRates,
+        },
+      ];
+      this.setState({
+        value: '',
+        description: '',
+        currency: 'USD',
+        method: 'Dinheiro',
+        tag: 'Alimentação',
+        exchangeRates: '',
+      }, () => {
+        dispatch(fetchExchangeRates(currency, expenseToSave));
+      });
     });
   }
 
   render() {
-    const { currency, method, tag } = this.state;
+    const {
+      value,
+      description,
+      currency,
+      method,
+      tag,
+    } = this.state;
     const { wallet: { currencies } } = this.props;
     return (
       <div>
@@ -97,6 +91,7 @@ class WalletForm extends Component {
           <input
             data-testid="value-input"
             name="value"
+            value={ value }
             onChange={ this.handleChange }
           />
         </label>
@@ -106,6 +101,7 @@ class WalletForm extends Component {
           <input
             data-testid="description-input"
             name="description"
+            value={ description }
             onChange={ this.handleChange }
           />
         </label>
@@ -137,11 +133,11 @@ class WalletForm extends Component {
           </select>
         </label>
 
-        <label htmlFor="category">
+        <label htmlFor="tag">
           Tag:
           <select
             data-testid="tag-input"
-            name="category"
+            name="tag"
             value={ tag }
             onChange={ this.handleChange }
           >

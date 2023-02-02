@@ -16,22 +16,28 @@ const expendureSave = (expenses) => ({
 });
 
 export function fetchCurrencies() {
-  return (dispatch) => {
-    dispatch(expendureSave()); // dispatch da action 'REQUEST_MOVIES_STARTED'
-    return fetch('https://economia.awesomeapi.com.br/json/all')
-      .then((response) => response.json())
-      .then((result) => {
-        const currenciesKeys = Object.keys(result);
-        const currencies = [];
-        for (let index = 0; index < currenciesKeys.length; index += 1) {
-          const USDT = 'USDT';
-          if (currenciesKeys[index] !== USDT) {
-            currencies.push(currenciesKeys[index]);
-          }
+  return (dispatch) => fetch('https://economia.awesomeapi.com.br/json/all')
+    .then((response) => response.json())
+    .then((result) => {
+      const currenciesKeys = Object.keys(result);
+      const currencies = [];
+      for (let index = 0; index < currenciesKeys.length; index += 1) {
+        const USDT = 'USDT';
+        if (currenciesKeys[index] !== USDT) {
+          currencies.push(currenciesKeys[index]);
         }
-        return dispatch(currenciesSave(currencies));
-      });
-  };
+      }
+      return dispatch(currenciesSave(currencies));
+    });
+}
+
+export function fetchExchangeRates(currency, expenseToSave) {
+  return (dispatch) => fetch('https://economia.awesomeapi.com.br/json/all')
+    .then((response) => response.json())
+    .then((result) => {
+      expenseToSave[expenseToSave.length - 1].exchangeRates = result;
+      return dispatch(expendureSave(expenseToSave));
+    });
 }
 
 export { loginSave, currenciesSave, expendureSave };

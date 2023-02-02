@@ -7,43 +7,29 @@ class Header extends Component {
   constructor() {
     super();
 
-    // const { wallet: { expenses } } = this.props;
-    // let sum = 0;
-    // sum += expenses.map((expense) => expense.value);
-
     this.handleTotal = this.handleTotal.bind(this);
 
     this.state = {
-      totalCost: 0,
       currency: 'BRL',
     };
   }
 
-  // componentDidMount() {
-  //   this.handleTotal();
-  // }
-
-  handleTotal() {
-    const { wallet: { expenses } } = this.props;
+  handleTotal(expenses) {
     let sum = 0;
     for (let index = 0; index < expenses.length; index += 1) {
-      sum += Number(expenses.value);
+      const { currency } = expenses[index];
+      const { exchangeRates } = expenses[index];
+      const cost = Number(expenses[index].value);
+      const exchangeRate = exchangeRates[currency].ask;
+      sum += cost * exchangeRate;
     }
-    this.setState({
-      totalCost: sum,
-    });
-    return sum;
+    return (Math.round(sum * 100) / 100).toFixed(2);
   }
 
   render() {
-    const { user: { email } } = this.props;
-    const { totalCost, currency } = this.state;
-    // let sum = 0;
-    // sum += expenses.map((expense) => expense.value);
-    // console.log(sum);
-    // this.setState({
-    //   totalCost: sum,
-    // });
+    const { user: { email }, wallet: { expenses } } = this.props;
+    const totalCost = this.handleTotal(expenses);
+    const { currency } = this.state;
     return (
       <header>
 
@@ -58,12 +44,11 @@ class Header extends Component {
 
         <div className="container-total-cost">
           <p>
-            `Despesa Total: R$
+            Despesa Total: R$
 
           </p>
           <p data-testid="total-field">
             { totalCost }
-            `
           </p>
           <p data-testid="header-currency-field">
             {currency}
