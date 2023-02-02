@@ -1,3 +1,4 @@
 const LOGIN = 'LOGIN';
+const CURRENCIES = 'CURRENCIES';
 
-export { LOGIN };
+export { LOGIN, CURRENCIES };

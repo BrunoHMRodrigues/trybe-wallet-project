@@ -1,8 +1,13 @@
-import { LOGIN } from './typeActions';
+import { LOGIN, CURRENCIES } from './typeActions';
 
 const loginSave = (email) => ({
   type: LOGIN,
   payload: email,
 });
 
-export { loginSave };
+const currenciesSave = (currencies) => ({
+  type: CURRENCIES,
+  payload: currencies,
+});
+
+export { loginSave, currenciesSave };
