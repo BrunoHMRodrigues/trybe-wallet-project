@@ -1,7 +1,7 @@
 // Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
 
 // import {  } from '../actions';
-import { CURRENCIES, EXPENSES, EXCHANGE_RATES } from '../actions/typeActions';
+import { CURRENCIES, EXPENSES } from '../actions/typeActions';
 
 const INITIAL_STATE = {
   currencies: [],
