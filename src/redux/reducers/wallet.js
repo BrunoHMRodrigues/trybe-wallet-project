@@ -16,9 +16,6 @@ const wallet = (state = INITIAL_STATE, action) => {
     return { ...state, currencies: action.payload };
   case EXPENSES:
     return { ...state, expenses: action.payload };
-  case EXCHANGE_RATES:
-    console.log(action.payload);
-    return { ...state, expenses: action.payload };
   default:
     return state;
   }

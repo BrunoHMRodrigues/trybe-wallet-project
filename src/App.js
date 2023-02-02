@@ -7,10 +7,12 @@ class App extends Component {
   render() {
     return (
       <main>
+        {/* <BrowserRouter> */}
         <Switch>
           <Route exact path="/" component={ Login } />
           <Route path="/carteira" component={ Wallet } />
         </Switch>
+        {/* </BrowserRouter> */}
       </main>
     );
   }
