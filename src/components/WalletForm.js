@@ -70,7 +70,7 @@ class WalletForm extends Component {
         tag: 'Alimentação',
         exchangeRates: '',
       }, () => {
-        dispatch(fetchExchangeRates(currency, expenseToSave));
+        dispatch(fetchExchangeRates(expenseToSave));
       });
     });
   }

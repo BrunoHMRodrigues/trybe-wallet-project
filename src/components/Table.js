@@ -1,8 +1,33 @@
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { fetchExchangeRates } from '../redux/actions/index';
 
 class Table extends Component {
+  constructor() {
+    super();
+    this.handleDelete = this.handleDelete.bind(this);
+  }
+
+  handleDelete({ target }) {
+    const { dispatch, wallet: { expenses } } = this.props;
+    const { id } = target;
+    let newExpenses = [];
+    if (expenses.length > 1) {
+      let count = 0;
+      for (let index = 0; index < expenses.length; index += 1) {
+        if (expenses[index] !== expenses[id]) {
+          expenses[index].id = count;
+          newExpenses.push(expenses[index]);
+          count += 1;
+        }
+      }
+    } else {
+      newExpenses = null;
+    }
+    dispatch(fetchExchangeRates(newExpenses));
+  }
+
   render() {
     const { wallet: { expenses } } = this.props;
     return (
@@ -24,23 +49,6 @@ class Table extends Component {
           </thead>
 
           <tbody>
-            {/* {expenses.map((expense, index) => (
-              <tr key={ index }>
-                <td>{expense.description}</td>
-                <td>{expense.tag}</td>
-                <td>{expense.method}</td>
-                <td>{expense.value}</td>
-                <td>{expense.exchangeRates(expense.currency).name}</td>
-                <td>{Number(expense.exchangeRates(expense.currency).ask)}</td>
-                <td>{Number(expense.value) * Number(expense.exchangeRates(expense.currency).ask)}</td>
-                <td>Real</td>
-                <td>
-                  <button type="button">Editar</button>
-                  <button type="button">Excluir</button>
-                </td>
-              </tr>
-            ))} */}
-
             {expenses.map((expense, index) => {
               const { description, tag, method, value } = expense;
               const valueFormated = (Math.round(value * 100) / 100).toFixed(2);
@@ -64,24 +72,20 @@ class Table extends Component {
                   <td>{convertedValue}</td>
                   <td>{currencyConversion}</td>
                   <td>
-                    <button type="button">Editar</button>
-                    <button type="button">Excluir</button>
+                    <button type="button" id={ index }>Editar</button>
+                    <button
+                      type="button"
+                      data-testid="delete-btn"
+                      id={ index }
+                      onClick={ this.handleDelete }
+                    >
+                      Excluir
+                    </button>
                   </td>
                 </tr>
               );
             })}
           </tbody>
-          {/* <tr>
-            <td>teste1</td>
-            <td>teste2</td>
-            <td>teste3</td>
-            <td>teste4</td>
-            <td>teste5</td>
-            <td>teste6</td>
-            <td>teste7</td>
-            <td>teste8</td>
-            <td>teste9</td>
-          </tr> */}
         </table>
 
       </div>
@@ -90,6 +94,7 @@ class Table extends Component {
 }
 
 Table.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   wallet: PropTypes.shape({
     currencies: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     expenses: PropTypes.arrayOf(PropTypes.shape({
