@@ -98,15 +98,6 @@ class WalletForm extends Component {
       }
     }
     dispatch(expendureSave(newExpenses));
-    // this.setState({
-    //   id: idToEdit,
-    //   value,
-    //   description,
-    //   currency,
-    //   method,
-    //   tag,
-    //   exchangeRates,
-    // });
   }
 
   render() {

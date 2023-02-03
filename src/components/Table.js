@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { fetchExchangeRates, editExpense } from '../redux/actions/index';
+import { editExpense, expendureSave } from '../redux/actions/index';
 
 class Table extends Component {
   constructor() {
@@ -13,27 +13,18 @@ class Table extends Component {
   handleDelete({ target }) {
     const { dispatch, wallet: { expenses } } = this.props;
     const { id } = target;
-    let newExpenses = [];
-    if (expenses.length > 1) {
-      let count = 0;
-      for (let index = 0; index < expenses.length; index += 1) {
-        if (expenses[index] !== expenses[id]) {
-          expenses[index].id = count;
-          newExpenses.push(expenses[index]);
-          count += 1;
-        }
+    const newExpenses = [];
+    for (let index = 0; index < expenses.length; index += 1) {
+      if (expenses[index] !== expenses[id]) {
+        newExpenses.push(expenses[index]);
       }
-    } else {
-      newExpenses = null;
     }
-    dispatch(fetchExchangeRates(newExpenses));
+    dispatch(expendureSave(newExpenses));
   }
 
   handleEdit({ target }) {
-    // const { dispatch, wallet: { expenses } } = this.props;
     const { dispatch } = this.props;
     const { id } = target;
-    // const { value, description, currency, method, tag, exchangeRates } = expenses[id];
     dispatch(editExpense(true, id));
   }
 
@@ -71,7 +62,7 @@ class Table extends Component {
               const currencyConversion = 'Real';
 
               return (
-                <tr key={ index }>
+                <tr key={ `expense${Math.random()}` }>
                   <td>{description}</td>
                   <td>{tag}</td>
                   <td>{method}</td>

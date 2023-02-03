@@ -37,16 +37,12 @@ export function fetchCurrencies() {
 }
 
 export function fetchExchangeRates(expenseToSave) {
-  if (expenseToSave !== null) {
-    console.log('entrou');
-    return (dispatch) => fetch('https://economia.awesomeapi.com.br/json/all')
-      .then((response) => response.json())
-      .then((result) => {
-        expenseToSave[expenseToSave.length - 1].exchangeRates = result;
-        return dispatch(expendureSave(expenseToSave));
-      });
-  }
-  return ((dispatch) => dispatch(expendureSave([])));
+  return (dispatch) => fetch('https://economia.awesomeapi.com.br/json/all')
+    .then((response) => response.json())
+    .then((result) => {
+      expenseToSave[expenseToSave.length - 1].exchangeRates = result;
+      return dispatch(expendureSave(expenseToSave));
+    });
 }
 
 export { loginSave, currenciesSave, expendureSave, editExpense };
