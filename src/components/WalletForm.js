@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   fetchCurrencies,
-  fetchExchangeRates } from '../redux/actions/index';
+  fetchExchangeRates, expendureSave } from '../redux/actions/index';
 
 class WalletForm extends Component {
   constructor() {
@@ -21,6 +21,7 @@ class WalletForm extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.addExpendure = this.addExpendure.bind(this);
+    this.editExpendure = this.editExpendure.bind(this);
   }
 
   componentDidMount() {
@@ -73,6 +74,39 @@ class WalletForm extends Component {
         dispatch(fetchExchangeRates(expenseToSave));
       });
     });
+  }
+
+  editExpendure() {
+    const { dispatch, wallet: { expenses, idToEdit } } = this.props;
+    const { id, exchangeRates } = expenses[idToEdit];
+    const { value, description, currency, method, tag } = this.state;
+    const editedExpense = {
+      id,
+      value,
+      description,
+      currency,
+      method,
+      tag,
+      exchangeRates,
+    };
+    const newExpenses = [];
+    for (let index = 0; index < expenses.length; index += 1) {
+      if (index === idToEdit) {
+        newExpenses.push(editedExpense);
+      } else {
+        newExpenses.push(expenses[index]);
+      }
+    }
+    dispatch(expendureSave(newExpenses));
+    // this.setState({
+    //   id: idToEdit,
+    //   value,
+    //   description,
+    //   currency,
+    //   method,
+    //   tag,
+    //   exchangeRates,
+    // });
   }
 
   render() {
@@ -164,12 +198,6 @@ class WalletForm extends Component {
             Adicionar despesa
           </button>
         )}
-        {/* <button
-          type="button"
-          onClick={ this.addExpendure }
-        >
-          {(editor) ? 'Editar despesa' : 'Adicionar despesa'}
-        </button> */}
       </div>
     );
   }
@@ -178,6 +206,7 @@ class WalletForm extends Component {
 WalletForm.propTypes = {
   dispatch: PropTypes.func.isRequired,
   wallet: PropTypes.shape({
+    idToEdit: PropTypes.number.isRequired,
     currencies: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     editor: PropTypes.bool.isRequired,
     expenses: PropTypes.arrayOf(PropTypes.shape({
