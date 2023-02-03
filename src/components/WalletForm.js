@@ -83,7 +83,7 @@ class WalletForm extends Component {
       method,
       tag,
     } = this.state;
-    const { wallet: { currencies } } = this.props;
+    const { wallet: { currencies, editor } } = this.props;
     return (
       <div>
         <label htmlFor="value">
@@ -149,12 +149,27 @@ class WalletForm extends Component {
           </select>
         </label>
 
-        <button
+        {(editor) ? (
+          <button
+            type="button"
+            onClick={ this.editExpendure }
+          >
+            Editar despesa
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={ this.addExpendure }
+          >
+            Adicionar despesa
+          </button>
+        )}
+        {/* <button
           type="button"
           onClick={ this.addExpendure }
         >
-          Adicionar despesa
-        </button>
+          {(editor) ? 'Editar despesa' : 'Adicionar despesa'}
+        </button> */}
       </div>
     );
   }
@@ -164,6 +179,7 @@ WalletForm.propTypes = {
   dispatch: PropTypes.func.isRequired,
   wallet: PropTypes.shape({
     currencies: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+    editor: PropTypes.bool.isRequired,
     expenses: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.isRequired,
       value: PropTypes.string.isRequired,

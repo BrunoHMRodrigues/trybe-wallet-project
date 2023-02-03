@@ -1,4 +1,4 @@
-import { LOGIN, CURRENCIES, EXPENSES } from './typeActions';
+import { LOGIN, CURRENCIES, EXPENSES, EDIT } from './typeActions';
 
 const loginSave = (email) => ({
   type: LOGIN,
@@ -13,6 +13,11 @@ const currenciesSave = (currencies) => ({
 const expendureSave = (expenses) => ({
   type: EXPENSES,
   payload: expenses,
+});
+
+const editExpense = (shouldEdit, id) => ({
+  type: EDIT,
+  payload: { shouldEdit, id },
 });
 
 export function fetchCurrencies() {
@@ -44,4 +49,4 @@ export function fetchExchangeRates(expenseToSave) {
   return ((dispatch) => dispatch(expendureSave([])));
 }
 
-export { loginSave, currenciesSave, expendureSave };
+export { loginSave, currenciesSave, expendureSave, editExpense };

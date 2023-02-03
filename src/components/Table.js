@@ -1,12 +1,13 @@
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { fetchExchangeRates } from '../redux/actions/index';
+import { fetchExchangeRates, editExpense } from '../redux/actions/index';
 
 class Table extends Component {
   constructor() {
     super();
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
   }
 
   handleDelete({ target }) {
@@ -26,6 +27,14 @@ class Table extends Component {
       newExpenses = null;
     }
     dispatch(fetchExchangeRates(newExpenses));
+  }
+
+  handleEdit({ target }) {
+    // const { dispatch, wallet: { expenses } } = this.props;
+    const { dispatch } = this.props;
+    const { id } = target;
+    // const { value, description, currency, method, tag, exchangeRates } = expenses[id];
+    dispatch(editExpense(true, id));
   }
 
   render() {
@@ -72,7 +81,15 @@ class Table extends Component {
                   <td>{convertedValue}</td>
                   <td>{currencyConversion}</td>
                   <td>
-                    <button type="button" id={ index }>Editar</button>
+                    <button
+                      type="button"
+                      data-testid="edit-btn"
+                      id={ index }
+                      onClick={ this.handleEdit }
+                    >
+                      Editar
+                    </button>
+
                     <button
                       type="button"
                       data-testid="delete-btn"
